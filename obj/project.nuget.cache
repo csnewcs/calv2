@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "wj+QfaJjanLyWeaZLoT4t84cMXU+Rk1+7INf2TzFfCZupfaXr//0GDaBoGmIOMH1HZO7JpgpFyt4qlXf4Y8yKA==",
+  "success": true,
+  "projectFilePath": "/home/csnewcs/Desktop/programming/git/Calv2/Calv2.csproj",
+  "expectedPackageFiles": [
+    "/home/csnewcs/.nuget/packages/atksharp/3.22.25.128/atksharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/cairosharp/3.22.25.128/cairosharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/gdksharp/3.22.25.128/gdksharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/giosharp/3.22.25.128/giosharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/glibsharp/3.22.25.128/glibsharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/gtksharp/3.22.25.128/gtksharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/pangosharp/3.22.25.128/pangosharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0-rc.2.20475.17/microsoft.aspnetcore.app.ref.5.0.0-rc.2.20475.17.nupkg.sha512"
+  ],
+  "logs": []
+}

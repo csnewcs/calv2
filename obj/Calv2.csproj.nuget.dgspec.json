@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/csnewcs/Desktop/programming/git/Calv2/Calv2.csproj": {}
+  },
+  "projects": {
+    "/home/csnewcs/Desktop/programming/git/Calv2/Calv2.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/csnewcs/Desktop/programming/git/Calv2/Calv2.csproj",
+        "projectName": "Calv2",
+        "projectPath": "/home/csnewcs/Desktop/programming/git/Calv2/Calv2.csproj",
+        "packagesPath": "/home/csnewcs/.nuget/packages/",
+        "outputPath": "/home/csnewcs/Desktop/programming/git/Calv2/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/csnewcs/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "GtkSharp": {
+              "target": "Package",
+              "version": "[3.22.25.128, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[5.0.0-rc.2.20475.17, 5.0.0-rc.2.20475.17]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.100-rc.2.20479.15/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
