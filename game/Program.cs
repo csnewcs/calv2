@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Gtk;
 
 namespace Calv2
@@ -15,8 +16,15 @@ namespace Calv2
             Application.Run();
         }
 
-        void startClick(object o, EventArgs e)
+        async void startClick(object o, EventArgs e)
         {
+            if (name.Text == "")
+            {
+                name.StyleContext.AddClass("ErrorEntry");
+                await  Task.Delay(400);
+                name.StyleContext.RemoveClass("ErrorEntry");
+                return;
+            }
             Hide();
             userGrade = this.grade.Active + 1;
             userName = this.name.Text;

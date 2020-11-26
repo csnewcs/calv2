@@ -17,3 +17,8 @@ app.get('/', function(req, res) {
     res.sendFile(path + '/pages/index.html')
     console.log('서버 접속')
 })
+
+app.get('/rank', function (req, res) {
+    res.sendFile(path + '/pages/rank.html')
+    console.log('순위 조회')
+})

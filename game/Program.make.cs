@@ -31,6 +31,11 @@ namespace Calv2
         {
             Resizable = false;
 
+            CssProvider cssp = new CssProvider();
+            cssp.LoadFromData(System.IO.File.ReadAllText("css/Program.css"));
+            StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssp, 800);
+            Console.WriteLine();
+
              Grid main = new Grid();
              main.Margin = 10;
              main.RowSpacing = 15;
