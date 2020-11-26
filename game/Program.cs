@@ -28,41 +28,15 @@ namespace Calv2
             data.Add("grade", this.grade.Active + 1);
             Hide();
 
+            Application.Init();
+            Game gm = new Game(out data);
+            gm.DeleteEvent += windowClosed;
+            Application.Run();
+
            if (easy.Active)
            {
                data.Add("difficulty",  "easy");
                Console.WriteLine("difficulty:  easy ");
-               Application.Init();
-               Easy es = new Easy(out data);
-               es.DeleteEvent += windowClosed;
-               Application.Run();
-           }
-           else if (normal.Active)
-           {
-              data.Add("difficulty",  "normal");
-              Console.WriteLine("difficulty:  normal");
-               Application.Init();
-              Normal nm   = new Normal();
-              nm.DeleteEvent += windowClosed;
-               Application.Run();
-           }
-           else if (hard.Active)
-           {
-                data.Add("difficulty",  "hard");
-                Console.WriteLine("difficulty:  hard ");
-               Application.Init();
-               Hard hd = new Hard();
-               hd.DeleteEvent += windowClosed;
-               Application.Run();
-           }
-           else if (extreme.Active)
-           {
-                 data.Add("difficulty",  "extreme");
-                 Console.WriteLine("difficulty:  extreme ");
-                 Application.Init();
-                 Extreme ex = new Extreme();
-                 ex.DeleteEvent += windowClosed;
-                 Application.Run();
            }
             Console.Write("name: " + name.Text);
         }
