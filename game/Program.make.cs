@@ -34,7 +34,7 @@ namespace Calv2
             CssProvider cssp = new CssProvider();
             cssp.LoadFromData(System.IO.File.ReadAllText("css/Program.css"));
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssp, 800);
-            Console.WriteLine();
+            Console.WriteLine("프로그램 실행");
 
              Grid main = new Grid();
              main.Margin = 10;

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Nt3GYmQ/u7G7fS6Lqu8rE1G+0cCUT0BC4NYfT9BJNZxG8+pQCeS6w9ab8xoYzLpYYWJJ8ca5v2i5LLdpqFICNg==",
+  "dgSpecHash": "l9WhajhZGjycCIDXkri2i5ikY98d7JJ0HubGB5LCLZS6ayVD7jlD5ScChwRNRAs40Ef7Tmg9dPNjhdaS4PMsUA==",
   "success": true,
   "projectFilePath": "/home/csnewcs/Desktop/programming/git/Calv2/game/Calv2.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "/home/csnewcs/.nuget/packages/giosharp/3.22.25.128/giosharp.3.22.25.128.nupkg.sha512",
     "/home/csnewcs/.nuget/packages/glibsharp/3.22.25.128/glibsharp.3.22.25.128.nupkg.sha512",
     "/home/csnewcs/.nuget/packages/gtksharp/3.22.25.128/gtksharp.3.22.25.128.nupkg.sha512",
+    "/home/csnewcs/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
     "/home/csnewcs/.nuget/packages/pangosharp/3.22.25.128/pangosharp.3.22.25.128.nupkg.sha512",
     "/home/csnewcs/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0/microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512"
   ],

@@ -46,3 +46,6 @@
 /home/csnewcs/Desktop/programming/git/Calv2/game/obj/Debug/net5.0/ref/Calv2.dll
 /home/csnewcs/Desktop/programming/git/Calv2/game/obj/Debug/net5.0/Calv2.pdb
 /home/csnewcs/Desktop/programming/git/Calv2/game/obj/Debug/net5.0/Calv2.genruntimeconfig.cache
+/home/csnewcs/Desktop/programming/git/Calv2/game/bin/Debug/net5.0/css/Program.css
+/home/csnewcs/Desktop/programming/git/Calv2/game/bin/Debug/net5.0/css/game.css
+/home/csnewcs/Desktop/programming/git/Calv2/game/bin/Debug/net5.0/Newtonsoft.Json.dll

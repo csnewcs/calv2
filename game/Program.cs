@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Gtk;
+using Newtonsoft.Json.Linq;
 
 namespace Calv2
 {
     partial class Program : Window
     {
-        int userGrade = 0;
-        string  userName = "";
-        string gameDifficulty = "";
         static void Main(string[] args)
         {
             Application.Init();
@@ -25,39 +23,53 @@ namespace Calv2
                 name.StyleContext.RemoveClass("ErrorEntry");
                 return;
             }
+            JObject data = new JObject();
+            data.Add("name", name.Text);
+            data.Add("grade", this.grade.Active + 1);
             Hide();
-            userGrade = this.grade.Active + 1;
-            userName = this.name.Text;
 
            if (easy.Active)
            {
-               gameDifficulty = "easy";
+               data.Add("difficulty",  "easy");
+               Console.WriteLine("difficulty:  easy ");
                Application.Init();
-               Easy es = new Easy();
+               Easy es = new Easy(out data);
+               es.DeleteEvent += windowClosed;
                Application.Run();
            }
            else if (normal.Active)
            {
-              gameDifficulty = "normal";
+              data.Add("difficulty",  "normal");
+              Console.WriteLine("difficulty:  normal");
                Application.Init();
               Normal nm   = new Normal();
+              nm.DeleteEvent += windowClosed;
                Application.Run();
            }
            else if (hard.Active)
            {
-                gameDifficulty = "hard";
+                data.Add("difficulty",  "hard");
+                Console.WriteLine("difficulty:  hard ");
                Application.Init();
                Hard hd = new Hard();
+               hd.DeleteEvent += windowClosed;
                Application.Run();
            }
            else if (extreme.Active)
            {
-                 gameDifficulty = "extreme";
+                 data.Add("difficulty",  "extreme");
+                 Console.WriteLine("difficulty:  extreme ");
                  Application.Init();
                  Extreme ex = new Extreme();
+                 ex.DeleteEvent += windowClosed;
                  Application.Run();
            }
-            
+            Console.Write("name: " + name.Text);
+        }
+   
+        void windowClosed(object o , EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

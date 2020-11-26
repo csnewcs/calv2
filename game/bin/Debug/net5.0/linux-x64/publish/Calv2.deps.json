@@ -1,15 +1,15 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v5.0",
+    "name": ".NETCoreApp,Version=v5.0/linux-x64",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v5.0": {
+    ".NETCoreApp,Version=v5.0": {},
+    ".NETCoreApp,Version=v5.0/linux-x64": {
       "Calv2/1.0.0": {
         "dependencies": {
-          "GtkSharp": "3.22.25.128",
-          "Newtonsoft.Json": "12.0.3"
+          "GtkSharp": "3.22.25.128"
         },
         "runtime": {
           "Calv2.dll": {}
@@ -83,14 +83,6 @@
           }
         }
       },
-      "Newtonsoft.Json/12.0.3": {
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.0.3.23909"
-          }
-        }
-      },
       "PangoSharp/3.22.25.128": {
         "dependencies": {
           "CairoSharp": "3.22.25.128",
@@ -152,13 +144,6 @@
       "sha512": "sha512-pdQgKKv8IzMYW3dVTQx1yCRcnq2dSHnnfLVwFvtkEHdobmgGb7sVeC4ghPBmPOfAjYgD2vTEb6yyZAWgSyLrzQ==",
       "path": "gtksharp/3.22.25.128",
       "hashPath": "gtksharp.3.22.25.128.nupkg.sha512"
-    },
-    "Newtonsoft.Json/12.0.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
-      "path": "newtonsoft.json/12.0.3",
-      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "PangoSharp/3.22.25.128": {
       "type": "package",
