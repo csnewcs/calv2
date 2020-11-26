@@ -1,0 +1,28 @@
+결과창에 쓸 코드
+
+start.Clicked += async delegate {
+    int maxScore = int.Parse(my.Text);
+    int myScore = int.Parse(my.Text);
+    float plus = (float)myScore / 512;
+    // pb.text
+    if (plus == 0) plus = 1;
+
+    float total = 1;
+    for (float i = plus; i  < myScore - plus;)
+    {
+        // pb.Text=i.ToString();
+        float present = i / (float)myScore;
+        pb.Fraction = present;
+        float plusi = plus * (1-present);
+        if (plusi <= 0) plusi = 1;
+        i += plusi;
+        Console.WriteLine(plusi);
+        await Task.Delay(1);
+        total += 1;
+    }
+
+    pb.Fraction = 1;
+    pb.Text = total.ToString();
+    Console.WriteLine("done");
+    pb.Text = total.ToString() + "totalDelay: ";
+};
