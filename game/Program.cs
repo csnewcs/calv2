@@ -41,7 +41,7 @@ namespace Calv2
            }
            else if (hard.Active)
            {
-               data.Add("difficulty", "hardl");
+               data.Add("difficulty", "hard");
                Console.Write("difficulty: hard, ");
            }
            else if (extreme.Active)
