@@ -86,21 +86,30 @@ namespace Calv2
             public List<double> wrongAnswer;
             public Quation(int maxTerm, int maxNumber, int bracketPersentage, int buttonCount)
             {
-                DataTable dt = new DataTable();
-                Random rd = new Random();
+                //초기화
                 wrongAnswer = new List<double>();
-                for (int i = 0; i < buttonCount - 1; i++) wrongAnswer.Add(0);
                 quationString = "";
+                answer = 0;
+
+                DataTable dt = new DataTable();
+                Random rd = new Random(); 
+
+                for (int i = 0; i < buttonCount - 1; i++) wrongAnswer.Add(0);
                 
                 bool opened = false;
+                bool looped = false;
                 int term = rd.Next(2, maxTerm);
                 for(int i = 0; i < term; i++)
                 {
                     quationString += rd.Next(1, maxNumber);
                     if (opened)
                     {
-                        quationString += ")";
-                        opened = false;
+                        if (looped)
+                        {
+                            quationString += ")";
+                            opened = false;
+                        }
+                        else looped = true;
                     }
                     if (i == term - 1) continue; //마지막에 괄호가 열리거나 부호가 찍히는거 방지
                     switch (rd.Next(0, 4))
@@ -110,35 +119,51 @@ namespace Calv2
                             quationString += " + ";
                             break;
                         case 1:
-                            quationString += "-";
+                            quationString += " - ";
                             break;
                         case 2:
-                            quationString += "*";
+                            quationString += " * ";
                             break;
                         case 3:
-                            quationString += "/";
+                            quationString += " / ";
                             break;
                     }
-                    if (rd.Next(0, 101) <= bracketPersentage)
+                    if (rd.Next(0, 101) <= bracketPersentage && term != 2 && !opened && i != term-2)
                     {
                         quationString += "(";
                         opened = true;
                     }
                 }
-
+                 Console.WriteLine(quationString);
                 object compute = dt.Compute(quationString, null) ;
                 if (compute.GetType() == typeof(int)) answer = (double)((int)compute) ; //정답 완성
-                else answer = (double)compute;
+                else
+                {
+                    answer = (double)compute;
+                    answer = Math.Round(answer, 2);
+                } 
 
                 for (int i = 0; i < buttonCount - 1; i++)
                 {
-                    Console.WriteLine("오답 만들기");
-                    double wrong = answer;
-                    int plusminus = rd.Next(-1 * Math.Abs((int)answer),  Math.Abs((int)answer));
-                    wrong += rd.Next(-1 * Math.Abs((int)answer),  Math.Abs((int)answer));
-                    if (quationString.Contains('/')) wrong += (double)(rd.Next(-1000, 1000)) / 1000;
-                    if (answer == wrong || wrongAnswer.Contains(wrong)) i--;
-                    else wrongAnswer[i] = wrong;
+                    try
+                    {
+                        double wrong = answer;
+                        int plusminus = rd.Next(-1 * Math.Abs((int)answer),  Math.Abs((int)answer));
+                        if (quationString.Contains('-')) wrong += rd.Next(-1 * maxNumber,  maxNumber);
+                        else wrong += rd.Next(0, maxNumber);                   
+
+                        if (quationString.Contains('/'))
+                        {
+                            wrong += (double)(rd.Next(-1000, 1000)) / 1000;
+                            wrong = Math.Round(wrong, 2);
+                        }
+                        if (answer == wrong || wrongAnswer.Contains(wrong)) i--;
+                        else wrongAnswer[i] = wrong;
+                    }
+                    catch 
+                    {
+                        i--;
+                    }
                 }
             }
         }

@@ -41,13 +41,13 @@ namespace Calv2
            }
            else if (hard.Active)
            {
-               data.Add("difficulty", "normal");
-               Console.Write("difficulty: normal, ");
+               data.Add("difficulty", "hardl");
+               Console.Write("difficulty: hard, ");
            }
            else if (extreme.Active)
            {
-               data.Add("difficulty", "normal");
-               Console.Write("difficulty: normal, ");
+               data.Add("difficulty", "extreme");
+               Console.Write("difficulty: extreme, ");
            }
 
             Console.WriteLine("name: " + name.Text);

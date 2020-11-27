@@ -26,9 +26,10 @@ namespace Calv2
             countdown();            
             baseSetting(data["difficulty"].ToString());
             make();
-            Quation qt  = new Quation(maxTerm, maxNumber, bracketPersentage, buttonCount);
-            Console.WriteLine(qt.quationString + "   " + qt.answer);
-            foreach(var a in qt.wrongAnswer) Console.WriteLine(a);
+            for (int i = 0; i < 100; i++)
+            {
+                Quation qt  = new Quation(maxTerm, maxNumber, bracketPersentage, buttonCount);
+            }
         }
 
         private void make()
