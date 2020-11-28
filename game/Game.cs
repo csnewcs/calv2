@@ -21,17 +21,25 @@ namespace Calv2
         decimal timeleft = 0; //남은 시간
         decimal minusTime = 0; //단계당 감소하는 제한시간
 
-        async private void countdown()
-        {            
-            countdownLabel.StyleContext.AddClass("BigLabel");
-            main.Add(countdownLabel);
-            main.ColumnHomogeneous = true;
-            main.RowHomogeneous = true;
-            ShowAll();
-            for (int i = 4; i >= 0; i--)
+        int[] levelup = new int[] {3, 9, 18, 30, 45, 63};
+        int number = 1;
+        
+        JObject data = new JObject();
+        public JObject jsonData
+        {
+            get
             {
-                await Task.Delay(1000);
-                countdownLabel.Text = $"{i}초 후 시작";
+                return data;
+            }
+        }
+
+        private void countdown()
+        {   
+            for (int i = 4; i >= 0; )
+            {
+                Thread.Sleep(1000);
+                Application.Invoke(delegate {countdownLabel.Text = $"{i}초 후 시작";});
+                i--;
             }
             doing = true;
         }
@@ -134,7 +142,6 @@ namespace Calv2
                         opened = true;
                     }
                 }
-                 Console.WriteLine(quationString);
                 object compute = dt.Compute(quationString, null) ;
                 if (compute.GetType() == typeof(int)) answer = (double)((int)compute) ; //정답 완성
                 else

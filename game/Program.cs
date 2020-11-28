@@ -53,7 +53,7 @@ namespace Calv2
             Console.WriteLine("name: " + name.Text);
             
             Application.Init();
-            Game gm = new Game(ref data);
+            Game gm = new Game(data);
             gm.DeleteEvent += windowClosed;
             Application.Run();
         }
