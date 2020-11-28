@@ -9,11 +9,10 @@ namespace Calv2
 {
     partial class Game : Window
     { 
-        Label countdownLabel = new Label("5초 후 시작");
-        Label quastionLabel = new Label("문제가 나오는 레이블");
-        Label levelLabel = new Label("레벨을 표시하는 레이블");
-        Label nextScoreLabel = new Label("1");
-        Label prevScroeLabel = new Label("0");
+        Label questionLabel = new Label("5초 후 시작");
+        Label levelLabel = new Label("");
+        Label nextScoreLabel = new Label("");
+        Label prevScroeLabel = new Label("");
         
         Button[] buttons = new Button[1];
          int buttonCount = 0;
@@ -26,7 +25,7 @@ namespace Calv2
             CssProvider cssp = new CssProvider();
             cssp.LoadFromPath("css/game.css");
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssp, 800);
-            SetDefaultSize(1280,720);
+            SetDefaultSize(1366, 768);
             main.ColumnHomogeneous = true;
             main.RowHomogeneous = true;
             this.data = data;
@@ -35,20 +34,13 @@ namespace Calv2
             main.RowSpacing = 15;
             main.ColumnSpacing = 15;
             Add(main);
-            countdownLabel.StyleContext.AddClass("BigLabel");
             // main.Add(countdownLabel);
             
             
-            // new Thread(new ThreadStart(countdown)).Start();
             
             baseSetting(data["difficulty"].ToString());
 
             make();
-            for (int i = 0; i < 5; i++)
-            {
-                Quation qt  = new Quation(maxTerm, maxNumber, bracketPersentage, buttonCount);
-                Console.WriteLine(qt.quationString + " = " + qt.answer);
-            }
         }
 
         private void make()
@@ -59,21 +51,26 @@ namespace Calv2
                 buttonGrid.ColumnHomogeneous = true;
                 // buttonGrid.RowHomogeneous = true;
                 rank.Orientation = Orientation.Vertical;
+                rank.ShowText = true;
                timer.StyleContext.AddClass("progressbar");
                rank.StyleContext.AddClass("progressbar");
-               quastionLabel.StyleContext.AddClass("BigLabel");
+               questionLabel.StyleContext.AddClass("BigLabel");
+               timer.ShowText = true;
                
                rank.Halign = Align.Center;
+                rank.MarginEnd= 30;
 
                for (int i = 0; i < buttons.Length; i++)
                {
-                   buttons[i] = new Button("정답 버튼");
+                   buttons[i] = new Button();
+                   buttons[i].StyleContext.AddClass("answerButton");
                    int devide = 60/buttonCount;
-                   buttonGrid.Attach(buttons[i], i*devide + 1, 1, devide, 1);
+                   buttonGrid.Attach(buttons[i], i*devide + 1, 1, devide, 1);                   
                }
                buttonGrid.MarginBottom = 125;
                buttonGrid.RowHomogeneous = true;
                timer.Valign = Align.Start;
+                levelLabel.Halign = Align.Start;
 
                 rankGrid.Attach(nextScoreLabel, 1, 1, 1,1);
                 rankGrid.Attach(rank, 1, 2, 1, 2);
@@ -87,10 +84,13 @@ namespace Calv2
                main.Attach(levelLabel, 1, 1, 1, 1);
                levelLabel.MarginBottom = 20;
                main.Attach(rankGrid, 1, 2, 1, 3);
-               main.Attach(quastionLabel, 2, 1, 3, 2);
+               main.Attach(questionLabel, 2, 1, 3, 2);
                main.Attach(buttonGrid, 2, 3, 3, 2);
                main.Attach(timer, 5, 1, 1, 1);
                ShowAll();
+
+                new Thread(new ThreadStart(countdown)).Start();
+               new Thread(new ThreadStart(game)).Start();
         }
     }
 }
