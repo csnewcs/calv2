@@ -19,6 +19,9 @@ namespace Calv2
         ProgressBar timer = new ProgressBar();
         ProgressBar rank = new ProgressBar();
         Grid main = new Grid();
+        Image[] images = new Image[5];
+
+        Grid heartGrid = new Grid();
         
         public Game(JObject data) : base("사칙연산v2")
         {
@@ -29,6 +32,8 @@ namespace Calv2
             main.ColumnHomogeneous = true;
             main.RowHomogeneous = true;
             this.data = data;
+
+            base.ResizeChecked += resize;
 
             main.Margin = 20;
             main.RowSpacing = 15;
@@ -48,6 +53,7 @@ namespace Calv2
                buttons = new Button[buttonCount];
                Grid buttonGrid = new Grid();
                Grid rankGrid = new Grid();
+               heartGrid.ColumnHomogeneous = true;
                 buttonGrid.ColumnHomogeneous = true;
                 // buttonGrid.RowHomogeneous = true;
                 rank.Orientation = Orientation.Vertical;
@@ -65,9 +71,20 @@ namespace Calv2
                    buttons[i] = new Button();
                    buttons[i].StyleContext.AddClass("answerButton");
                    int devide = 60/buttonCount;
-                   buttonGrid.Attach(buttons[i], i*devide + 1, 1, devide, 1);                   
+                   buttonGrid.Attach(buttons[i], i*devide + 1, 1, devide, 1);
                }
-               buttonGrid.MarginBottom = 125;
+               int height = 0;
+               int width = 0;
+               GetSize(out width, out height);
+               int imageheight = height/5;
+               for (int i = 0; i < 5; i++)
+               {
+                    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("heart-solid.png");
+                    pixbuf = pixbuf.ScaleSimple(imageheight, imageheight, Gdk.InterpType.Bilinear);
+                    images[i] = new Image(pixbuf);
+                    heartGrid.Attach(images[i], i + 1, 1,1 ,1);
+               }
+            //    buttonGrid.MarginBottom = 125;
                buttonGrid.RowHomogeneous = true;
                timer.Valign = Align.Start;
                 levelLabel.Halign = Align.Start;
@@ -85,7 +102,8 @@ namespace Calv2
                levelLabel.MarginBottom = 20;
                main.Attach(rankGrid, 1, 2, 1, 3);
                main.Attach(questionLabel, 2, 1, 3, 2);
-               main.Attach(buttonGrid, 2, 3, 3, 2);
+               main.Attach(buttonGrid, 2, 3, 3, 1);
+               main.Attach(heartGrid, 2, 4, 3, 1);
                main.Attach(timer, 5, 1, 1, 1);
                ShowAll();
 

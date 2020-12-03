@@ -27,6 +27,8 @@ namespace Calv2
 
         int number = 1;
         int level = 1;
+        int life = 5;
+        bool succeed = false;
         
         JObject data = new JObject();
         public JObject jsonData
@@ -161,6 +163,7 @@ namespace Calv2
                     answer = (double)compute;
                     answer = Math.Round(answer, 2);
                 } 
+                Console.WriteLine(questionString + " = " + answer);
 
                 for (int i = 0; i < buttonCount - 1; i++)
                 {
@@ -254,11 +257,17 @@ namespace Calv2
                 {
                     level++;
                     scoreUnit += plusScoreUnit;
-                    Console.WriteLine(scoreUnit);
                     maxTime -= minusTime;
                     Application.Invoke(delegate {levelLabel.Text = enhe + " - " + level.ToString();});
                 }
                 rank.Text = score.ToString();
+                if (!succeed) minusHeart();
+                if (life == 0)
+                {
+                    data["score"] = score;
+                    Application.Invoke(delegate {Close();});
+                }
+                succeed = false;
             }
         }
         private void buttonClick(double correct,double selected, ref JObject oneQuestion)
@@ -267,15 +276,42 @@ namespace Calv2
             if (correct == selected)
             {
                 oneQuestion.Add("correct", true);
-                // oneQuestion["correct"] = true;
-                score += scoreUnit;           
+                score += scoreUnit;
+                succeed = true;
             }
             else
             {
                 oneQuestion.Add("correct", false);
-                // oneQuestion["correct"] = false;
             }
             timeleft = 0m;
+        }
+        int lastWidth = 0, lastHeight = 0;
+        private void resize(object o, EventArgs e)
+        {
+            int width, height;
+            GetSize(out width, out height);
+            if (lastWidth == width && lastHeight == height) return;
+            lastWidth = width; lastHeight = height;
+            int imageheight = height/5;
+            Console.WriteLine("imageheight = " + imageheight);
+            for (int i = 0; i < 5; i++)
+            {
+                Gdk.Pixbuf pixbuf = images[i].Pixbuf;
+                pixbuf = pixbuf.ScaleSimple(imageheight, imageheight, Gdk.InterpType.Bilinear);
+                images[i].Pixbuf = pixbuf;
+            }
+        }
+        private void minusHeart()
+        {
+            life--;
+            Console.WriteLine(life);
+            int width, height;
+            GetSize(out width, out height);
+            int imageheight = height/5;
+            Application.Invoke(delegate {
+                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("heart-broken.png");
+                images[life].Pixbuf = pixbuf.ScaleSimple(imageheight, imageheight, Gdk.InterpType.Bilinear);
+            });
         }
     }
 }

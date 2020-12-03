@@ -60,6 +60,9 @@ namespace Calv2
    
         void windowClosed(object o , EventArgs e)
         {
+            Console.WriteLine("죽음");
+            Game gm = (Game)o;
+            Console.WriteLine(gm.jsonData["score"]);
             Environment.Exit(0);
         }
     }
