@@ -6,8 +6,12 @@ const express = require('express')
 const app = express()
 const path = require('path').resolve()
 
+app.use(express.json())
 // app.set('view engine', 'ejs')
 // app.engine('html', require('ejs').renderFile)
+let data = [
+]
+// let order = 0
 
 var server = app.listen(port, function () {
     console.log('Server started')
@@ -22,3 +26,28 @@ app.get('/rank', function (req, res) {
     res.sendFile(path + '/pages/rank.html')
     console.log('순위 조회')
 })
+
+app.get('/api', function (req, res) {
+    // res.sendFile
+})
+
+app.put('/api/add', function (req, res) {
+    console.log(req.body)
+    let json = JSON.parse(req.body)
+    let storeJson = JSON.parse(fs.readFileSync('data/data.json'))
+    storeJson.push(json)
+    fs.writeFile(JSON.stringify(storeJson), 'data/data.json')
+
+    if (json.hideName == 1) { //0: 안가림, 1: 2번째 글자 가림, 2: 전체 가림
+        json.name = String.prototype.replaceAt(1, name)
+    }
+    else if (json.hideName == 2) {
+        json.name = '***'
+    }
+
+    data.push(json)
+    
+})
+String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+}
