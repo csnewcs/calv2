@@ -28,15 +28,22 @@ app.get('/rank', function (req, res) {
 })
 
 app.get('/api', function (req, res) {
-    // res.sendFile
+    res.sendStatus(200).json(data)
 })
 
 app.put('/api/add', function (req, res) {
     console.log(req.body)
-    let json = JSON.parse(req.body)
-    let storeJson = JSON.parse(fs.readFileSync('data/data.json'))
+    let json = req.body
+    let storeJson = JSON.parse('[]')
+    try  {
+        storeJson = JSON.parse(fs.readFileSync(path + '/data/data.json'))
+    } catch {
+        !fs.existsSync(path + '/data') && fs.mkdirSync(path + '/data')
+    }
+    console.log(storeJson)
     storeJson.push(json)
-    fs.writeFile(JSON.stringify(storeJson), 'data/data.json')
+    console.log(storeJson)
+    fs.writeFile(path + '/data/data.json', JSON.stringify(storeJson), 'utf8', function(error, data) {})
 
     if (json.hideName == 1) { //0: 안가림, 1: 2번째 글자 가림, 2: 전체 가림
         json.name = String.prototype.replaceAt(1, name)
@@ -46,7 +53,7 @@ app.put('/api/add', function (req, res) {
     }
 
     data.push(json)
-    
+    res.status(200).json({message: "success"})
 })
 String.prototype.replaceAt=function(index, character) {
     return this.substr(0, index) + character + this.substr(index+character.length);
