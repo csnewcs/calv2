@@ -13,7 +13,8 @@ namespace Calv2
         Label levelLabel = new Label("");
         Label nextScoreLabel = new Label("");
         Label prevScroeLabel = new Label("");
-        
+        Label presScoreLabel = new Label("0");
+
         Button[] buttons = new Button[1];
          int buttonCount = 0;
         ProgressBar timer = new ProgressBar();
@@ -39,7 +40,6 @@ namespace Calv2
             main.RowSpacing = 15;
             main.ColumnSpacing = 15;
             Add(main);
-            // main.Add(countdownLabel);
             
             
             
@@ -57,7 +57,6 @@ namespace Calv2
                 buttonGrid.ColumnHomogeneous = true;
                 // buttonGrid.RowHomogeneous = true;
                 rank.Orientation = Orientation.Vertical;
-                rank.ShowText = true;
                timer.StyleContext.AddClass("progressbar");
                rank.StyleContext.AddClass("progressbar");
                questionLabel.StyleContext.AddClass("BigLabel");

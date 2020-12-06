@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,8 +15,11 @@ namespace Calv2
     { 
         string enhe;
         bool doing = false; //게임을 하고 있다, 그렇지 않다
+        bool downloading = true;
         int maxNumber = 0;
         ulong score = 0; //현재 점수
+        ulong[] scores = new ulong[0];
+        string serverUrl = ""; //서버의 URL(./config.json에서 읽어오며, 기본값은 localhost)
         uint scoreUnit = 0; //문제 하나당 점수
         uint plusScoreUnit = 0; //단계당 추가되는 점수
         int bracketPersentage = 0; //괄호가 들어가는 확률
@@ -41,12 +46,14 @@ namespace Calv2
 
         private void countdown()
         {   
-            for (int i = 4; i >= 0; )
+            for (int i = 4; i >=1; )
             {
                 Thread.Sleep(1000);
                 Application.Invoke(delegate {questionLabel.Text = $"{i}초 후 시작";});
                 i--;
             }
+            Thread.Sleep(1000);
+            Application.Invoke(delegate {questionLabel.Text = "추가적인 로딩중....";});
             doing = true;
         }
 
@@ -99,6 +106,26 @@ namespace Calv2
                     maxTime = 8;
                     enhe = "극한";
                     break;
+            }
+            string url = "http://localhost";
+            try 
+            {
+                JObject.Parse(File.ReadAllText("./config.json"))["url"].ToString();
+            }
+            catch
+            {
+                File.WriteAllText("./config.json", @"{""url"": ""http://localhost""}");
+            }
+            WebClient client = new WebClient();
+            try
+            {
+                string download = client.DownloadString(url);
+            }
+            catch
+            {
+                MessageDialog dialog = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, false, "데이터를 가져오는데 실패하였습니다. 오프라인 모드로 진행합니다.");
+                dialog.Run();
+                dialog.Dispose();
             }
         }
         struct question
@@ -194,7 +221,8 @@ namespace Calv2
         
         private void game()
         {
-            while (!doing) {Thread.Sleep(10);} // 카운트다운 끝날 때 까지 기다림
+            while (!doing || downloading) {Thread.Sleep(10);} // 카운트다운 끝날 때 까지 기다림
+            
             JArray questionData = new JArray();
             Random rd = new Random();
             question question = new question(maxTerm, maxNumber, bracketPersentage, buttonCount);
