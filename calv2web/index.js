@@ -14,6 +14,11 @@ let data = [
 // let order = 0
 
 var server = app.listen(port, function () {
+    try  {
+        data = JSON.parse(fs.readFileSync(path + '/data/data.json'))
+    } catch {
+        !fs.existsSync(path + '/data') && fs.mkdirSync(path + '/data')
+    }
     console.log('Server started')
 })
 
@@ -27,8 +32,8 @@ app.get('/rank', function (req, res) {
     console.log('순위 조회')
 })
 
-app.get('/api', function (req, res) {
-    res.sendStatus(200).json(data)
+app.get('/api/read', function (req, res) {
+    res.send(data)
 })
 
 app.put('/api/add', function (req, res) {
@@ -46,7 +51,7 @@ app.put('/api/add', function (req, res) {
     fs.writeFile(path + '/data/data.json', JSON.stringify(storeJson), 'utf8', function(error, data) {})
 
     if (json.hideName == 1) { //0: 안가림, 1: 2번째 글자 가림, 2: 전체 가림
-        json.name = String.prototype.replaceAt(1, name)
+        json.name = hideName(json.name)
     }
     else if (json.hideName == 2) {
         json.name = '***'
@@ -55,6 +60,15 @@ app.put('/api/add', function (req, res) {
     data.push(json)
     res.status(200).json({message: "success"})
 })
-String.prototype.replaceAt=function(index, character) {
-    return this.substr(0, index) + character + this.substr(index+character.length);
+
+function hideName(name) {
+    returnName = ''
+    for (i = 0; i < name.length; i++) {
+        if (i == 1) {
+            returnName += '*'
+            continue
+        }
+        returnName += name[i]
+    }
+    return returnName
 }
