@@ -11,18 +11,19 @@ namespace Calv2
     { 
         Label questionLabel = new Label("5초 후 시작");
         Label levelLabel = new Label("");
-        Label nextScoreLabel = new Label("");
-        Label prevScroeLabel = new Label("");
+        Label nextScoreLabel = new Label("0");
+        Label prevScroeLabel = new Label("0");
         Label presScoreLabel = new Label("0");
 
         Button[] buttons = new Button[1];
          int buttonCount = 0;
         ProgressBar timer = new ProgressBar();
-        ProgressBar rank = new ProgressBar();
+        ProgressBar scoreProgressBar = new ProgressBar();
         Grid main = new Grid();
         Image[] images = new Image[5];
 
         Grid heartGrid = new Grid();
+        Grid rankGrid = new Grid();
         
         public Game(JObject data) : base("사칙연산v2")
         {
@@ -40,11 +41,8 @@ namespace Calv2
             main.RowSpacing = 15;
             main.ColumnSpacing = 15;
             Add(main);
-            
-            
-            
-            baseSetting(data["difficulty"].ToString());
 
+            baseSetting(data["difficulty"].ToString());
             make();
         }
 
@@ -52,18 +50,18 @@ namespace Calv2
         {
                buttons = new Button[buttonCount];
                Grid buttonGrid = new Grid();
-               Grid rankGrid = new Grid();
                heartGrid.ColumnHomogeneous = true;
                 buttonGrid.ColumnHomogeneous = true;
                 // buttonGrid.RowHomogeneous = true;
-                rank.Orientation = Orientation.Vertical;
+                scoreProgressBar.Orientation = Orientation.Vertical;
+                scoreProgressBar.Inverted = true;
                timer.StyleContext.AddClass("progressbar");
-               rank.StyleContext.AddClass("progressbar");
+               scoreProgressBar.StyleContext.AddClass("progressbar");
                questionLabel.StyleContext.AddClass("BigLabel");
                timer.ShowText = true;
                
-               rank.Halign = Align.Center;
-                rank.MarginEnd= 30;
+                scoreProgressBar.Halign = Align.Center;
+                scoreProgressBar.MarginEnd= 30;
 
                for (int i = 0; i < buttons.Length; i++)
                {
@@ -89,9 +87,14 @@ namespace Calv2
                 levelLabel.Halign = Align.Start;
 
                 rankGrid.Attach(nextScoreLabel, 1, 1, 1,1);
-                rankGrid.Attach(rank, 1, 2, 1, 2);
+                if (offline) rankGrid.Attach(presScoreLabel, 1, 2, 2, 4);
+                else
+                {
+                    rankGrid.Attach(scoreProgressBar, 1, 2, 1, 2);
+                    rankGrid.Attach(presScoreLabel, 2, 2, 1, 2);
+                }
                 rankGrid.Attach(prevScroeLabel, 1, 4, 1, 1);
-                rank.Halign = Align.Center;
+                scoreProgressBar.Halign = Align.Center;
                 rankGrid.RowHomogeneous = true;
                 rankGrid.ColumnHomogeneous = true;
                 nextScoreLabel.Valign = Align.End;

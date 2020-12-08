@@ -18,8 +18,12 @@ namespace Calv2
         bool downloading = true;
         int maxNumber = 0;
         ulong score = 0; //현재 점수
+        int rank = 0;
         ulong[] scores = new ulong[0];
+        ulong nextScore = 0;
+        ulong prevScore = 0;
         string serverUrl = ""; //서버의 URL(./config.json에서 읽어오며, 기본값은 localhost)
+        bool offline = false;
         uint scoreUnit = 0; //문제 하나당 점수
         uint plusScoreUnit = 0; //단계당 추가되는 점수
         int bracketPersentage = 0; //괄호가 들어가는 확률
@@ -27,8 +31,6 @@ namespace Calv2
         decimal maxTime = 0;
         decimal timeleft = 0; //남은 시간
         decimal minusTime = 0; //단계당 감소하는 제한시간
-        int nextScore = 0;
-        int prevScore = 0;
 
         int number = 1;
         int level = 1;
@@ -110,7 +112,7 @@ namespace Calv2
             string url = "http://localhost";
             try 
             {
-                JObject.Parse(File.ReadAllText("./config.json"))["url"].ToString();
+                url = JObject.Parse(File.ReadAllText("./config.json"))["url"].ToString();
             }
             catch
             {
@@ -119,14 +121,33 @@ namespace Calv2
             WebClient client = new WebClient();
             try
             {
-                string download = client.DownloadString(url);
+                Console.WriteLine(url + "/api/read");
+                string download = client.DownloadString(url + "/api/read");
+                Console.WriteLine(download);
+                JArray users = JArray.Parse(download);
+                scores = new ulong[users.Count];
+                rank = users.Count;
+                for (int i = 0; i < users.Count;i++)
+                {
+                    scores[i] = (ulong)users[i]["score"];
+                }
+                Array.Sort(scores);
+                // foreach (var a in scores) Console.Write(a + ", ");
+                nextScore = scores[0];
+                nextScoreLabel.Text = scores[0].ToString();
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
+                offline = true;
+                // rankGrid.Remove(rank);
+                // rankGrid.Remove(presScoreLabel);
+                // rankGrid.Attach(presScoreLabel, 1, 2, 2, 4);
                 MessageDialog dialog = new MessageDialog(null, DialogFlags.DestroyWithParent, MessageType.Error, ButtonsType.Ok, false, "데이터를 가져오는데 실패하였습니다. 오프라인 모드로 진행합니다.");
                 dialog.Run();
                 dialog.Dispose();
             }
+            downloading = false;
         }
         struct question
         {
@@ -288,7 +309,7 @@ namespace Calv2
                     maxTime -= minusTime;
                     Application.Invoke(delegate {levelLabel.Text = enhe + " - " + level.ToString();});
                 }
-                rank.Text = score.ToString();
+                scoreProgressBar.Text = score.ToString();
                 if (!succeed) minusHeart();
                 if (life == 0)
                 {
@@ -296,6 +317,33 @@ namespace Calv2
                     Application.Invoke(delegate {Close();});
                 }
                 succeed = false;
+                
+                Application.Invoke(delegate {
+                    presScoreLabel.Text = score.ToString();
+                });
+                if (rank == 0 || scores.Length == 0) continue;
+                new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10);}).Start();
+                while (nextScore <= score)
+                {
+                    rank--;
+                        if (rank == 0)
+                        {
+                            nextScore = score;
+                            prevScore = scores[scores.Length - 1];
+                            break;
+                        }
+                        prevScore = scores[scores.Length - rank - 1];
+                        nextScore = scores[scores.Length - rank];
+                         new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10, score == prevScore);}).Start();
+                    // Console.WriteLine($"{rank}");
+                    Application.Invoke(delegate {
+                        // Console.WriteLine("prev: " + (scores.Length - rank - 1));
+                        // Console.WriteLine("next: " + (scores.Length - rank));
+                        prevScroeLabel.Text = score.ToString();
+                        nextScoreLabel.Text = scores[scores.Length - rank].ToString();
+                    });
+                    // if (nextScore > score) break;
+                }
             }
         }
         private void buttonClick(double correct,double selected, ref JObject oneQuestion)
@@ -340,6 +388,36 @@ namespace Calv2
                 Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("heart-broken.png");
                 images[life].Pixbuf = pixbuf.ScaleSimple(imageheight, imageheight, Gdk.InterpType.Bilinear);
             });
+        }
+        private void animationScoreProgressBar(double presentFraction, double goalFraction, double plus = 0.001, int delay = 1, bool set0 = false)
+        {
+            if (presentFraction < goalFraction)
+            {
+                for (; presentFraction < goalFraction; presentFraction += plus)
+                {
+                    Application.Invoke(delegate {
+                        scoreProgressBar.Fraction = presentFraction;
+                    });
+                    Thread.Sleep(delay);
+                }
+            }
+            else
+            {
+                for (; presentFraction < goalFraction + 1; presentFraction += plus)
+                {
+                    Application.Invoke(delegate {
+                        if (presentFraction >= 1) scoreProgressBar.Fraction = presentFraction - 1;
+                        else scoreProgressBar.Fraction = presentFraction;
+                    });
+                    Thread.Sleep(delay);
+                }
+            }
+            if (set0)
+            {
+                Application.Invoke(delegate {
+                    scoreProgressBar.Fraction = 0;
+                });
+            }
         }
     }
 }
