@@ -6,19 +6,12 @@ namespace Calv2
 {
     partial class Program : Window
     {
-        public Program(int work = 0) : base("사칙연산 V2")
+        public Program() : base("사칙연산 V2")
         {
             DeleteEvent += delegate {
                 Environment.Exit(0);
             };
-            if (work == 0)
-            {
                 start();
-            }
-            else if (work == 1)
-            {
-                result();
-            }
         }
 
         RadioButton easy = new RadioButton("쉬움");
@@ -27,6 +20,8 @@ namespace Calv2
         RadioButton extreme = new RadioButton("극한");
         ComboBox grade = new ComboBox(new string[] {"1학년", "2학년", "3학년"});
         Entry name = new Entry();
+        Grid main = new Grid();
+        
         private void start()
         {
             Resizable = false;
@@ -36,7 +31,6 @@ namespace Calv2
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssp, 800);
             Console.WriteLine("프로그램 실행");
 
-             Grid main = new Grid();
              main.Margin = 10;
              main.RowSpacing = 15;
              main.ColumnSpacing = 15;
@@ -73,11 +67,6 @@ namespace Calv2
             main.Attach(start, 2, 4, 1, 2);
             Add(main);
             ShowAll();
-        }
-
-        private void result()
-        {
-
         }
     }
 }

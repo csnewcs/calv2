@@ -135,6 +135,7 @@ namespace Calv2
                 // foreach (var a in scores) Console.Write(a + ", ");
                 nextScore = scores[0];
                 nextScoreLabel.Text = scores[0].ToString();
+                jsonData.Add("firstScore", scores[scores.Length - 1]);
             }
             catch (Exception e)
             {
@@ -291,6 +292,7 @@ namespace Calv2
                     }
                     questionLabel.Text = question.questionString;
                 });
+                succeed = false;
                 while(timeleft > 0) 
                 {
                     timeleft -= 0.01m;
@@ -314,36 +316,48 @@ namespace Calv2
                 if (life == 0)
                 {
                     data["score"] = score;
+                    doing = false;
                     Application.Invoke(delegate {Close();});
                 }
-                succeed = false;
                 
                 Application.Invoke(delegate {
                     presScoreLabel.Text = score.ToString();
                 });
-                if (rank == 0 || scores.Length == 0) continue;
-                new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10);}).Start();
-                while (nextScore <= score)
+                if (rank == 0 || scores.Length == 0) 
                 {
-                    rank--;
-                        if (rank == 0)
-                        {
-                            nextScore = score;
-                            prevScore = scores[scores.Length - 1];
-                            break;
-                        }
-                        prevScore = scores[scores.Length - rank - 1];
-                        nextScore = scores[scores.Length - rank];
-                         new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10, score == prevScore);}).Start();
-                    // Console.WriteLine($"{rank}");
-                    Application.Invoke(delegate {
-                        // Console.WriteLine("prev: " + (scores.Length - rank - 1));
-                        // Console.WriteLine("next: " + (scores.Length - rank));
-                        prevScroeLabel.Text = score.ToString();
-                        nextScoreLabel.Text = scores[scores.Length - rank].ToString();
-                    });
-                    // if (nextScore > score) break;
+                    scoreProgressBar.Name = "first";
+                    scoreProgressBar.Fraction = 1;
+                    continue;
                 }
+
+                if (succeed)
+                {
+                    while (nextScore <= score)
+                    {
+                            if (rank <= 1) //이미 1등이면 안함
+                            {
+                                nextScore = score;
+                                prevScore = scores[scores.Length - 1];
+                                scoreProgressBar.Name = "first";
+                                scoreProgressBar.Fraction = 1;
+                                break;
+                            }
+                            rank--;
+                            prevScore = scores[scores.Length - rank - 1];
+                            nextScore = scores[scores.Length - rank];
+                            //  new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10, score == prevScore);}).Start();
+                        // Console.WriteLine($"{rank}");
+                        Application.Invoke(delegate {
+                            // Console.WriteLine("prev: " + (scores.Length - rank - 1));
+                            // Console.WriteLine("next: " + (scores.Length - rank));
+                            prevScroeLabel.Text = prevScore.ToString();
+                            nextScoreLabel.Text = nextScore.ToString();
+                        });
+                        // if (nextScore > score) break;
+                    }
+                    new Thread(() => {animationScoreProgressBar(scoreProgressBar.Fraction, (double)(score - prevScore) / (double)(nextScore - prevScore), 0.01, 10, prevScore == score);}).Start();
+                }
+
             }
         }
         private void buttonClick(double correct,double selected, ref JObject oneQuestion)

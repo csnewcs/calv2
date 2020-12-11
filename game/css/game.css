@@ -8,3 +8,7 @@ progress, trough {
 .answerButton {
     font-size: xx-large;
 }
+#first > trough > progress{
+    background-color: gold;
+    outline-color: gold;
+}

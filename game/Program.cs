@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Gtk;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Calv2
 {
@@ -58,12 +59,39 @@ namespace Calv2
             Application.Run();
         }
    
+        ProgressBar scoreProgressBar = new ProgressBar();
         void windowClosed(object o , EventArgs e)
         {
-            Console.WriteLine("죽음");
             Game gm = (Game)o;
-            Console.WriteLine(gm.jsonData["score"]);
-            Environment.Exit(0);
+            JObject jsonData = gm.jsonData;
+            WebClient client = new WebClient();
+            foreach (var a in main.Children) main.Remove(a); // main아래 있는 것 전부 제거
+            string name = jsonData["name"].ToString();
+            ulong score = (ulong)jsonData["score"];
+            Label title = new Label($"{jsonData["name"].ToString()}님의 점수는 {jsonData["score"].ToString()}점 입니다.");
+            RadioButton[] hideName = new RadioButton[] {
+                new RadioButton($"이름 가리지 않기: {jsonData["name"].ToString()}"),
+                new RadioButton($"2번째 글자만 가리기: {jsonData["name"].ToString().Remove(1, 1).Insert(1, "*")}"),
+                new RadioButton("모두 가리기: ***")
+            };
+
+            hideName[1].JoinGroup(hideName[0]);
+            hideName[2].JoinGroup(hideName[0]);
+
+            Button ok = new Button("확인");
+            main.Attach(title, 2, 1, 3, 1);
+            main.Attach(scoreProgressBar, 1, 1, 1, 4);
+            main.Attach(hideName[0], 2, 2, 1, 1);
+            main.Attach(hideName[1], 2, 3, 1, 1);
+            main.Attach(hideName[2], 2, 4, 1, 1);
+            main.Attach(ok, 3, 2, 1, 2);
+
+            ShowAll();
+            GC.Collect();
+        }
+        void animation()
+        {
+
         }
     }
 }
