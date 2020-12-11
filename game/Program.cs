@@ -74,13 +74,15 @@ namespace Calv2
                 new RadioButton($"2번째 글자만 가리기: {jsonData["name"].ToString().Remove(1, 1).Insert(1, "*")}"),
                 new RadioButton("모두 가리기: ***")
             };
+            scoreProgressBar.Orientation = Orientation.Vertical;
+            scoreProgressBar.Valign = Align.Start;
 
             hideName[1].JoinGroup(hideName[0]);
             hideName[2].JoinGroup(hideName[0]);
 
             Button ok = new Button("확인");
-            main.Attach(title, 2, 1, 3, 1);
             main.Attach(scoreProgressBar, 1, 1, 1, 4);
+            main.Attach(title, 2, 1, 3, 1);
             main.Attach(hideName[0], 2, 2, 1, 1);
             main.Attach(hideName[1], 2, 3, 1, 1);
             main.Attach(hideName[2], 2, 4, 1, 1);

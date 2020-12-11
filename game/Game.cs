@@ -132,7 +132,14 @@ namespace Calv2
                     scores[i] = (ulong)users[i]["score"];
                 }
                 Array.Sort(scores);
-                // foreach (var a in scores) Console.Write(a + ", ");
+                if (scores.Length == 0)
+                {
+                    nextScore = 0;
+                    jsonData.Add("firstScore", 0);
+                    nextScoreLabel.Text = "첫 번째";
+                    downloading = false;
+                    return;
+                }
                 nextScore = scores[0];
                 nextScoreLabel.Text = scores[0].ToString();
                 jsonData.Add("firstScore", scores[scores.Length - 1]);
