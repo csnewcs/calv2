@@ -22,7 +22,6 @@ namespace Calv2
         ulong[] scores = new ulong[0];
         ulong nextScore = 0;
         ulong prevScore = 0;
-        string serverUrl = ""; //서버의 URL(./config.json에서 읽어오며, 기본값은 localhost)
         bool offline = false;
         uint scoreUnit = 0; //문제 하나당 점수
         uint plusScoreUnit = 0; //단계당 추가되는 점수
@@ -36,8 +35,16 @@ namespace Calv2
         int level = 1;
         int life = 5;
         bool succeed = false;
-        
+
+        string url = "http://localhost";
         JObject data = new JObject();
+        public string serverUrl
+        {
+            get
+            {
+                return url;
+            }
+        }
         public JObject jsonData
         {
             get
@@ -45,7 +52,7 @@ namespace Calv2
                 return data;
             }
         }
-
+        
         private void countdown()
         {   
             for (int i = 4; i >=1; )
@@ -109,7 +116,7 @@ namespace Calv2
                     enhe = "극한";
                     break;
             }
-            string url = "http://localhost";
+            
             try 
             {
                 url = JObject.Parse(File.ReadAllText("./config.json"))["url"].ToString();
@@ -135,14 +142,14 @@ namespace Calv2
                 if (scores.Length == 0)
                 {
                     nextScore = 0;
-                    jsonData.Add("firstScore", 0);
+                    data.Add("firstScore", 0);
                     nextScoreLabel.Text = "첫 번째";
                     downloading = false;
                     return;
                 }
                 nextScore = scores[0];
                 nextScoreLabel.Text = scores[0].ToString();
-                jsonData.Add("firstScore", scores[scores.Length - 1]);
+                data.Add("firstScore", scores[scores.Length - 1]);
             }
             catch (Exception e)
             {
@@ -323,6 +330,7 @@ namespace Calv2
                 if (life == 0)
                 {
                     data["score"] = score;
+                    data["questions"] = questionData;
                     doing = false;
                     Application.Invoke(delegate {Close();});
                 }

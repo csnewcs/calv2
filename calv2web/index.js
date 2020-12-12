@@ -7,11 +7,8 @@ const app = express()
 const path = require('path').resolve()
 
 app.use(express.json())
-// app.set('view engine', 'ejs')
-// app.engine('html', require('ejs').renderFile)
 let data = [
 ]
-// let order = 0
 
 var server = app.listen(port, function () {
     try  {
@@ -40,6 +37,10 @@ app.get('/api/read', function (req, res) {
 })
 
 app.put('/api/add', function (req, res) {
+    if (req.body == '{}') {
+        res.status(403)
+        return;
+    }
     console.log(req.body)
     let json = req.body
     let storeJson = JSON.parse('[]')
