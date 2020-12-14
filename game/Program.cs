@@ -108,6 +108,7 @@ namespace Calv2
             else if (hideName[2].Active) jsonData["hideName"] = 2;
             try
             {
+                Console.WriteLine(jsonData.ToString());
                 WebClient client = new WebClient();
                 Console.WriteLine(jsonData.ToString());
                 client.Headers.Add("Content-Type", "application/json");

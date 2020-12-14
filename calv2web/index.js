@@ -37,8 +37,8 @@ app.get('/api/read', function (req, res) {
 })
 
 app.put('/api/add', function (req, res) {
-    if (req.body == '{}') {
-        res.status(403)
+    if (req.body == '{}' || !(req.body.hasOwnProperty('name') && req.body.hasOwnProperty('score') && req.body.hasOwnProperty('grade') && req.body.hasOwnProperty('questions') && req.body.hasOwnProperty('difficulty') && req.body.hasOwnProperty('hideName'))) {
+        res.status(403).json({"error": "check your json"})
         return;
     }
     console.log(req.body)
