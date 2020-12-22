@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gtk;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Threading;
 
 namespace Calv2
 {
@@ -69,21 +70,39 @@ namespace Calv2
             jsonData = gm.jsonData;
             Label title = new Label($"{jsonData["name"].ToString()}님의 점수는 {jsonData["score"].ToString()}점 입니다.");
             url = gm.serverUrl;
-
-            foreach (var a in main.Children) main.Remove(a); // main아래 있는 것 전부 제거
+            Remove(main);
+            main = new Grid();
+            main.RowSpacing = 15;
+            main.ColumnSpacing = 15;
+            main.RowHomogeneous = true;
+            
             string name = jsonData["name"].ToString();
             ulong score = (ulong)jsonData["score"];
-            hideName = new RadioButton[3] {
-                new RadioButton($"이름 가리지 않기: {jsonData["name"].ToString()}"),
-                new RadioButton($"2번째 글자만 가리기: {jsonData["name"].ToString().Remove(1, 1).Insert(1, "*")}"),
-                new RadioButton("모두 가리기: ***")
-            };
+            try
+            {
+                hideName = new RadioButton[3] {
+                    new RadioButton($"이름 가리지 않기: {jsonData["name"].ToString()}"),
+                    new RadioButton($"2번째 글자만 가리기: {jsonData["name"].ToString().Remove(1, 1).Insert(1, "*")}"),
+                    new RadioButton("모두 가리기: ***")
+                };
+                hideName[1].JoinGroup(hideName[0]);
+                hideName[2].JoinGroup(hideName[0]);
+            }
+            catch
+            {
+                hideName = new RadioButton[2] {
+                    new RadioButton($"이름 가리지 않기: {jsonData["name"].ToString()}"),
+                    new RadioButton("모두 가리기: ***")
+                };
+                hideName[1].JoinGroup(hideName[0]);
+            }
+            
+
             
             scoreProgressBar.Orientation = Orientation.Vertical;
+            scoreProgressBar.Halign = Align.Fill;
             scoreProgressBar.Valign = Align.Start;
 
-            hideName[1].JoinGroup(hideName[0]);
-            hideName[2].JoinGroup(hideName[0]);
 
             Button ok = new Button("확인");
             ok.Clicked += upload;
@@ -91,15 +110,28 @@ namespace Calv2
             main.Attach(title, 2, 1, 3, 1);
             main.Attach(hideName[0], 2, 2, 1, 1);
             main.Attach(hideName[1], 2, 3, 1, 1);
-            main.Attach(hideName[2], 2, 4, 1, 1);
             main.Attach(ok, 3, 2, 1, 2);
+
+            if (hideName.Length == 3) main.Attach(hideName[2], 2, 4, 1, 1);
+            Add(main);
+            // new Thread(() => {animation(score,  (ulong)jsonData["firstScore"]);}).Start(); 
 
             ShowAll();
             GC.Collect();
         }
-        void animation()
+        void animation(ulong score, ulong firstScore)
         {
-
+            float unit = (float)score / 512;
+            float present = 0;
+            int wait = 0;
+            for (; present < score; wait += 5)
+            {
+                Application.Invoke(delegate {
+                    scoreProgressBar.Fraction = present / (ulong)firstScore;
+                });
+                present += unit;
+                System.Threading.Thread.Sleep(wait);
+            }
         }
         async void upload(object o, EventArgs e)
         {

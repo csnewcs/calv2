@@ -130,7 +130,6 @@ namespace Calv2
             {
                 Console.WriteLine(url + "/api/read");
                 string download = client.DownloadString(url + "/api/read");
-                Console.WriteLine(download);
                 JArray users = JArray.Parse(download);
                 scores = new ulong[users.Count];
                 rank = users.Count;
@@ -309,11 +308,15 @@ namespace Calv2
                 succeed = false;
                 while(timeleft > 0) 
                 {
-                    timeleft -= 0.01m;
-                    Application.Invoke(delegate {
-                        timer.Fraction = (double)(timeleft / maxTime);
-                        timer.Text = timeleft.ToString() ;
-                    });
+                    try
+                    {
+                        timeleft -= 0.01m;
+                        Application.Invoke(delegate {
+                            timer.Fraction = (double)(timeleft / maxTime);
+                            timer.Text = timeleft.ToString() ;
+                        });
+                    }
+                    catch {}
                     Thread.Sleep(10);
                 }
                 number++;
@@ -424,9 +427,12 @@ namespace Calv2
             {
                 for (; presentFraction < goalFraction; presentFraction += plus)
                 {
-                    Application.Invoke(delegate {
-                        scoreProgressBar.Fraction = presentFraction;
-                    });
+                    try
+                    {
+                        Application.Invoke(delegate {
+                            scoreProgressBar.Fraction = presentFraction;
+                        });
+                    } catch{}
                     Thread.Sleep(delay);
                 }
             }
@@ -434,10 +440,14 @@ namespace Calv2
             {
                 for (; presentFraction < goalFraction + 1; presentFraction += plus)
                 {
-                    Application.Invoke(delegate {
-                        if (presentFraction >= 1) scoreProgressBar.Fraction = presentFraction - 1;
-                        else scoreProgressBar.Fraction = presentFraction;
-                    });
+                    try
+                    {
+                        Application.Invoke(delegate {
+                            if (presentFraction >= 1) scoreProgressBar.Fraction = presentFraction - 1;
+                            else scoreProgressBar.Fraction = presentFraction;
+                        });
+                    } catch {}
+
                     Thread.Sleep(delay);
                 }
             }
