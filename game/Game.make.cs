@@ -24,10 +24,10 @@ namespace Calv2
 
         Grid heartGrid = new Grid();
         Grid rankGrid = new Grid();
+        CssProvider cssp = new CssProvider();
         
         public Game(JObject data) : base("사칙연산v2")
         {
-            CssProvider cssp = new CssProvider();
             cssp.LoadFromPath("css/game.css");
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssp, 800);
             SetDefaultSize(1366, 768);

@@ -335,7 +335,10 @@ namespace Calv2
                     data["score"] = score;
                     data["questions"] = questionData;
                     doing = false;
-                    Application.Invoke(delegate {Close();});
+                    Application.Invoke(delegate {
+                        StyleContext.RemoveProviderForScreen(Gdk.Screen.Default, cssp);
+                        Close();
+                        });
                 }
                 
                 Application.Invoke(delegate {
